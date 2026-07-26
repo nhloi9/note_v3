@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ultimate Cheat Sheet — TypeScript · Go · Python</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a2e;
+      --panel-2: #18233c;
+      --text: #eef3ff;
+      --muted: #aebbd4;
+      --border: #2a3858;
+      --accent: #938cff;
+      --ts: #4f8cff;
+      --go: #00add8;
+      --py: #ffd43b;
+      --node: #83cd29;
+      --ok: #55d187;
+      --warn: #ffb454;
+      --danger: #ff6b7a;
+      --code: #080d18;
+      --shadow: 0 16px 50px rgba(0,0,0,.25);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 5%, rgba(79,140,255,.18), transparent 28%),
+        radial-gradient(circle at 85% 12%, rgba(53,197,213,.14), transparent 26%),
+        linear-gradient(180deg, #09101f 0%, var(--bg) 100%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    code, pre { font-family: "JetBrains Mono", "Fira Code", Consolas, monospace; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 24px 18px;
+      border-right: 1px solid var(--border);
+      background: rgba(8, 13, 25, .88);
+      backdrop-filter: blur(14px);
+    }
+
+    .brand {
+      padding: 12px 12px 22px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .brand h1 {
+      font-size: 18px;
+      margin: 0 0 8px;
+      line-height: 1.3;
+    }
+
+    .brand p {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0;
+    }
+
+    .search {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 10px 12px;
+      outline: none;
+      margin-bottom: 14px;
+    }
+
+    .search:focus { border-color: var(--accent); }
+
+    nav a {
+      display: block;
+      padding: 8px 11px;
+      margin: 3px 0;
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    nav a:hover, nav a.active {
+      color: white;
+      background: var(--panel-2);
+    }
+
+    main {
+      min-width: 0;
+      padding: 34px 42px 80px;
+      max-width: 1500px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .hero {
+      padding: 34px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(79,140,255,.14), rgba(53,197,213,.08));
+      box-shadow: var(--shadow);
+      margin-bottom: 26px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "</>";
+      position: absolute;
+      right: 28px;
+      top: 4px;
+      font-size: 140px;
+      font-weight: 900;
+      color: rgba(255,255,255,.035);
+      transform: rotate(-6deg);
+    }
+
+    .hero h2 {
+      font-size: clamp(28px, 5vw, 54px);
+      line-height: 1.08;
+      margin: 0 0 14px;
+      max-width: 900px;
+    }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 850px;
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .badges { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin: 18px 0 26px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(18,26,46,.88);
+      position: sticky;
+      top: 10px;
+      z-index: 20;
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+    }
+
+    .filter-group { display:flex; gap:8px; flex-wrap:wrap; }
+    .filter-btn, .print-btn {
+      border:1px solid var(--border);
+      background:var(--panel);
+      color:var(--muted);
+      padding:8px 12px;
+      border-radius:999px;
+      cursor:pointer;
+      font:inherit;
+      font-size:13px;
+    }
+    .filter-btn:hover, .print-btn:hover { color:white; border-color:var(--accent); }
+    .filter-btn.active { color:white; background:rgba(147,140,255,.15); border-color:var(--accent); }
+    .filter-btn[data-lang="ts"].active { border-color:var(--ts); }
+    .filter-btn[data-lang="go"].active { border-color:var(--go); }
+    .filter-btn[data-lang="py"].active { border-color:var(--py); }
+
+    .progress {
+      position:fixed;
+      top:0; left:0;
+      height:3px;
+      width:0;
+      background:linear-gradient(90deg,var(--ts),var(--go),var(--py));
+      z-index:100;
+    }
+
+    .quick-matrix {
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:12px;
+      margin-top:18px;
+    }
+    .quick-matrix .mini-card {
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:14px;
+      background:rgba(8,13,24,.55);
+    }
+    .mini-card strong { display:block; margin-bottom:5px; }
+    .mini-card.ts strong { color:var(--ts); }
+    .mini-card.go strong { color:var(--go); }
+    .mini-card.py strong { color:var(--py); }
+    .mini-card span { color:var(--muted); font-size:13px; }
+
+    body.lang-ts .card:not(.lang-ts),
+    body.lang-go .card:not(.lang-go),
+    body.lang-py .card:not(.lang-py) { opacity:.18; filter:grayscale(.7); }
+    body.lang-ts table td:nth-child(3),
+    body.lang-ts table td:nth-child(4),
+    body.lang-go table td:nth-child(2),
+    body.lang-go table td:nth-child(4),
+    body.lang-py table td:nth-child(2),
+    body.lang-py table td:nth-child(3) { opacity:.2; }
+
+    @media(max-width:800px){
+      .quick-matrix { grid-template-columns:1fr; }
+      .toolbar { position:relative; top:auto; }
+    }
+    .badge {
+      padding: 6px 11px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 13px;
+      background: rgba(255,255,255,.04);
+    }
+    .badge.ts { border-color: rgba(79,140,255,.6); }
+    .badge.go { border-color: rgba(53,197,213,.6); }
+    .badge.py { border-color: rgba(255,209,102,.6); }
+
+    section {
+      scroll-margin-top: 20px;
+      margin: 28px 0;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(18, 26, 46, .88);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .section-head {
+      padding: 22px 24px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-head h3 { margin: 0; font-size: 24px; }
+    .section-head p { margin: 5px 0 0; color: var(--muted); }
+
+    .section-body { padding: 22px 24px 26px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--panel);
+      padding: 16px;
+      min-width: 0;
+    }
+
+    .card h4 { margin: 0 0 10px; }
+    .card p { color: var(--muted); margin: 6px 0; }
+
+    .lang-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 17px;
+    }
+
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot.ts { background: var(--ts); }
+    .dot.go { background: var(--go); }
+    .dot.py { background: var(--py); }
+
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; }
+    table { width: 100%; border-collapse: collapse; min-width: 860px; }
+    th, td {
+      text-align: left;
+      vertical-align: top;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+    }
+    th:last-child, td:last-child { border-right: 0; }
+    tr:last-child td { border-bottom: 0; }
+    th {
+      background: #10192b;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: #dce6ff;
+    }
+    td { color: var(--muted); }
+    td strong { color: var(--text); }
+
+    .code {
+      background: var(--code);
+      border: 1px solid #24314f;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .code-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 11px;
+      color: var(--muted);
+      background: #0d1424;
+      border-bottom: 1px solid #24314f;
+      font-size: 12px;
+    }
+
+    .copy {
+      border: 0;
+      background: transparent;
+      color: var(--accent);
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    pre {
+      margin: 0;
+      padding: 14px;
+      overflow-x: auto;
+      font-size: 13px;
+      line-height: 1.55;
+      color: #e9f0ff;
+      tab-size: 2;
+    }
+
+    .kw { color: #c792ea; }
+    .fn { color: #82aaff; }
+    .str { color: #c3e88d; }
+    .num { color: #f78c6c; }
+    .cm { color: #63708b; }
+    .type { color: #ffcb6b; }
+
+    .note {
+      border-left: 4px solid var(--accent);
+      padding: 12px 14px;
+      background: rgba(124,156,255,.08);
+      border-radius: 8px;
+      margin: 14px 0;
+      color: var(--muted);
+    }
+
+    .note.warn { border-left-color: var(--warn); background: rgba(255,180,84,.08); }
+    .note.ok { border-left-color: var(--ok); background: rgba(85,209,135,.08); }
+
+    .flow {
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 16px 0;
+    }
+
+    .flow-node {
+      min-width: 145px;
+      text-align: center;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel-2);
+    }
+
+    .arrow {
+      align-self: center;
+      color: var(--accent);
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .tab {
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: var(--panel);
+      border-radius: 999px;
+      padding: 7px 12px;
+      cursor: pointer;
+    }
+    .tab.active { color: white; border-color: var(--accent); background: rgba(124,156,255,.12); }
+
+    .hidden { display: none !important; }
+
+    .compare-strip {
+      display: grid;
+      grid-template-columns: 1.1fr repeat(3, 1fr);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .compare-strip > div {
+      padding: 12px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-strip > div:nth-child(4n) { border-right: 0; }
+    .compare-strip > div:nth-last-child(-n+4) { border-bottom: 0; }
+    .compare-label { background: #10192b; font-weight: 700; }
+    .ts-cell { background: rgba(79,140,255,.05); }
+    .go-cell { background: rgba(53,197,213,.05); }
+    .py-cell { background: rgba(255,209,102,.04); }
+
+    .mini { font-size: 13px; color: var(--muted); }
+    .check { color: var(--ok); }
+    .cross { color: var(--danger); }
+
+    footer {
+      color: var(--muted);
+      text-align: center;
+      padding-top: 18px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 1050px) {
+      .layout { grid-template-columns: 1fr; }
+      aside {
+        position: relative;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+      }
+      nav { display: flex; overflow-x: auto; gap: 4px; }
+      nav a { white-space: nowrap; }
+      main { padding: 24px 18px 60px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      aside, .copy, .search { display: none; }
+      .layout { display: block; }
+      main { max-width: none; padding: 0; }
+      section, .hero { box-shadow: none; break-inside: avoid; }
+      body { background: white; color: black; }
+    }
+  </style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="layout">
+  <aside>
+    <div class="brand">
+      <h1>⚡ Syntax Cheat Sheet</h1>
+      <p>Node.js + TypeScript · Go · Python</p>
+    </div>
+    <input id="search" class="search" placeholder="Tìm: interface, async, map..." />
+    <nav id="nav">
+      <a href="#overview">1. Tổng quan</a>
+      <a href="#project">2. Khởi tạo project</a>
+      <a href="#variables">3. Biến và kiểu dữ liệu</a>
+      <a href="#control">4. Điều khiển luồng</a>
+      <a href="#functions">5. Hàm</a>
+      <a href="#collections">6. Collections</a>
+      <a href="#oop">7. Struct, class, interface</a>
+      <a href="#errors">8. Xử lý lỗi</a>
+      <a href="#async">9. Async và concurrency</a>
+      <a href="#modules">10. Module và package</a>
+      <a href="#io">11. File và JSON</a>
+      <a href="#backend">12. HTTP server</a>
+      <a href="#testing">13. Testing</a>
+      <a href="#comparison">14. So sánh nhanh</a>
+      <a href="#pitfalls">15. Điểm dễ nhầm</a>
+    </nav>
+  </aside>
+
+  <main>
+    <header class="hero">
+      <h2>Cùng một ý tưởng, ba cách biểu đạt</h2>
+      <p>Cheat sheet tối ưu để học chuyển đổi giữa Node.js/TypeScript, Go và Python: cú pháp đặt cạnh nhau, ví dụ backend thực tế, giải thích logic và cảnh báo những điểm dễ nhầm.</p>
+      <div class="badges">
+        <span class="badge ts">TypeScript · web ecosystem</span>
+        <span class="badge go">Go · concurrency + binary</span>
+        <span class="badge py">Python · automation + AI</span>
+      </div>
+      <div class="quick-matrix">
+        <div class="mini-card ts"><strong>Chọn TypeScript khi</strong><span>Team dùng JavaScript, xây web API, realtime hoặc chia sẻ type với frontend.</span></div>
+        <div class="mini-card go"><strong>Chọn Go khi</strong><span>Cần service concurrent, CLI, hiệu năng ổn định và deploy bằng một binary.</span></div>
+        <div class="mini-card py"><strong>Chọn Python khi</strong><span>Cần automation, data, AI/ML, notebook hoặc prototype nhanh.</span></div>
+      </div>
+    </header>
+
+    <div class="toolbar" aria-label="Công cụ cheat sheet">
+      <div class="filter-group">
+        <button class="filter-btn active" data-lang="all">Hiện cả 3</button>
+        <button class="filter-btn" data-lang="ts">TypeScript</button>
+        <button class="filter-btn" data-lang="go">Go</button>
+        <button class="filter-btn" data-lang="py">Python</button>
+      </div>
+      <button class="print-btn" onclick="window.print()">In / lưu PDF</button>
+    </div>
+
+    <section id="overview" data-search="tổng quan runtime compile interpreter node typescript go python">
+      <div class="section-head">
+        <h3>1. Bức tranh tổng quan</h3>
+        <p>Cùng giải một bài toán, nhưng khác nhau ở hệ kiểu, runtime và mô hình concurrency.</p>
+      </div>
+      <div class="section-body">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Tiêu chí</th><th>Node.js + TypeScript</th><th>Go</th><th>Python</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Thực thi</strong></td><td>TypeScript biên dịch thành JavaScript, chạy trên Node.js/V8</td><td>Biên dịch thành binary native</td><td>Thường được biên dịch thành bytecode rồi chạy trên CPython VM</td></tr>
+              <tr><td><strong>Hệ kiểu</strong></td><td>Static ở compile-time, structural typing</td><td>Static; named types có danh tính riêng, interface được thỏa mãn ngầm</td><td>Dynamic; type hints là tùy chọn</td></tr>
+              <tr><td><strong>Concurrency</strong></td><td>Event loop + Promise/async-await; Worker Threads hoặc process cho CPU-bound</td><td>Goroutine + channel, runtime scheduler</td><td>asyncio cho I/O; thread/process tùy bài toán</td></tr>
+              <tr><td><strong>Điểm mạnh</strong></td><td>Web/backend, ecosystem npm, chia sẻ type với frontend</td><td>Backend, CLI, hệ thống mạng, deploy đơn giản</td><td>Automation, data, AI/ML, scripting, backend</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="flow">
+          <div class="flow-node"><strong>TypeScript</strong><br><span class="mini">.ts source</span></div>
+          <div class="arrow">→</div>
+          <div class="flow-node">Type checker / transpiler</div>
+          <div class="arrow">→</div>
+          <div class="flow-node">JavaScript</div>
+          <div class="arrow">→</div>
+          <div class="flow-node">Node.js / V8</div>
+        </div>
+
+        <div class="flow">
+          <div class="flow-node"><strong>Go</strong><br><span class="mini">.go source</span></div>
+          <div class="arrow">→</div>
+          <div class="flow-node">Go compiler</div>
+          <div class="arrow">→</div>
+          <div class="flow-node">Native binary</div>
+        </div>
+
+        <div class="flow">
+          <div class="flow-node"><strong>Python</strong><br><span class="mini">.py source</span></div>
+          <div class="arrow">→</div>
+          <div class="flow-node">Bytecode</div>
+          <div class="arrow">→</div>
+          <div class="flow-node">Python VM</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="project" data-search="project init npm tsconfig go mod venv pip run build">
+      <div class="section-head">
+        <h3>2. Khởi tạo và chạy project</h3>
+        <p>Các lệnh tối thiểu để bắt đầu một project sạch.</p>
+      </div>
+      <div class="section-body grid">
+        <article class="card lang-ts">
+          <h4 class="lang-title"><span class="dot ts"></span>Node.js + TypeScript</h4>
+          <div class="code"><div class="code-head"><span>Shell</span><button class="copy">Copy</button></div><pre>mkdir app && cd app
+npm init -y
+npm i -D typescript tsx @types/node
+npx tsc --init
+mkdir src
+echo 'console.log("Hello")' &gt; src/main.ts
+npx tsx src/main.ts
+npx tsc</pre></div>
+          <p><code>tsx</code> chạy TS khi dev; <code>tsc</code> type-check và build JS.</p>
+        </article>
+
+        <article class="card lang-go">
+          <h4 class="lang-title"><span class="dot go"></span>Go</h4>
+          <div class="code"><div class="code-head"><span>Shell</span><button class="copy">Copy</button></div><pre>mkdir app && cd app
+go mod init example.com/app
+cat &gt; main.go &lt;&lt;'EOF'
+package main
+import "fmt"
+func main() { fmt.Println("Hello") }
+EOF
+
+go run .
+go build .
+./app</pre></div>
+          <p><code>go run .</code> build tạm rồi chạy package hiện tại; <code>go build .</code> tạo binary.</p>
+        </article>
+
+        <article class="card lang-py">
+          <h4 class="lang-title"><span class="dot py"></span>Python</h4>
+          <div class="code"><div class="code-head"><span>Shell</span><button class="copy">Copy</button></div><pre>mkdir app && cd app
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+echo 'print("Hello")' &gt; main.py
+python main.py</pre></div>
+          <p>Dùng virtual environment để dependency của từng project không xung đột.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="variables" data-search="variable const let var type string number boolean slice list tuple dict map zero value">
+      <div class="section-head">
+        <h3>3. Biến và kiểu dữ liệu</h3>
+        <p>Ba ngôn ngữ cùng có số, chuỗi, boolean, collection, nhưng quy tắc khai báo khác nhau.</p>
+      </div>
+      <div class="section-body grid">
+        <article class="card lang-ts">
+          <h4 class="lang-title"><span class="dot ts"></span>TypeScript</h4>
+          <div class="code"><div class="code-head"><span>TypeScript</span><button class="copy">Copy</button></div><pre><span class="kw">const</span> name: <span class="type">string</span> = <span class="str">"Lợi"</span>;
+<span class="kw">let</span> age: <span class="type">number</span> = <span class="num">24</span>;
+<span class="kw">let</span> active = <span class="kw">true</span>; <span class="cm">// inferred boolean</span>
+
+<span class="kw">const</span> ids: <span class="type">number</span>[] = [<span class="num">1</span>, <span class="num">2</span>];
+<span class="kw">const</span> pair: [<span class="type">string</span>, <span class="type">number</span>] = [<span class="str">"A"</span>, <span class="num">1</span>];
+
+<span class="kw">type</span> Status = <span class="str">"pending"</span> | <span class="str">"done"</span>;
+<span class="kw">let</span> status: Status = <span class="str">"pending"</span>;</pre></div>
+          <div class="note"><code>const</code> ngăn gán lại biến, không làm object trở thành immutable.</div>
+        </article>
+
+        <article class="card lang-go">
+          <h4 class="lang-title"><span class="dot go"></span>Go</h4>
+          <div class="code"><div class="code-head"><span>Go</span><button class="copy">Copy</button></div><pre><span class="kw">const</span> AppName <span class="type">string</span> = <span class="str">"demo"</span>
+<span class="kw">var</span> age <span class="type">int</span> = <span class="num">24</span>
+active := <span class="kw">true</span> <span class="cm">// chỉ dùng trong function</span>
+
+ids := []<span class="type">int</span>{<span class="num">1</span>, <span class="num">2</span>}
+fixed := [<span class="num">3</span>]<span class="type">int</span>{<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>}
+scores := <span class="kw">map</span>[<span class="type">string</span>]<span class="type">int</span>{
+    <span class="str">"A"</span>: <span class="num">10</span>,
+}
+
+<span class="kw">type</span> Status <span class="type">string</span>
+<span class="kw">const</span> Pending Status = <span class="str">"pending"</span></pre></div>
+          <div class="note">Biến chưa gán có <strong>zero value</strong>: <code>0</code>, <code>false</code>, <code>""</code>, <code>nil</code>...</div>
+        </article>
+
+        <article class="card lang-py">
+          <h4 class="lang-title"><span class="dot py"></span>Python</h4>
+          <div class="code"><div class="code-head"><span>Python</span><button class="copy">Copy</button></div><pre>name: <span class="type">str</span> = <span class="str">"Lợi"</span>
+age: <span class="type">int</span> = <span class="num">24</span>
+active = <span class="kw">True</span>
+
+ids: <span class="type">list</span>[<span class="type">int</span>] = [<span class="num">1</span>, <span class="num">2</span>]
+pair: <span class="type">tuple</span>[<span class="type">str</span>, <span class="type">int</span>] = (<span class="str">"A"</span>, <span class="num">1</span>)
+scores: <span class="type">dict</span>[<span class="type">str</span>, <span class="type">int</span>] = {<span class="str">"A"</span>: <span class="num">10</span>}
+
+<span class="kw">from</span> typing <span class="kw">import</span> Literal
+Status = Literal[<span class="str">"pending"</span>, <span class="str">"done"</span>]</pre></div>
+          <div class="note">Type hint không tự ép runtime phải đúng kiểu; cần type checker như mypy/pyright.</div>
+        </article>
+      </div>
+    </section>
+
+    <section id="control" data-search="if else switch match for while loop range break continue">
+      <div class="section-head">
+        <h3>4. Điều khiển luồng</h3>
+        <p><code>if</code>, lựa chọn nhiều nhánh và vòng lặp.</p>
+      </div>
+      <div class="section-body">
+        <div class="grid">
+          <article class="card lang-ts">
+            <h4 class="lang-title"><span class="dot ts"></span>TypeScript</h4>
+            <div class="code"><div class="code-head"><span>TypeScript</span><button class="copy">Copy</button></div><pre><span class="kw">if</span> (score &gt;= <span class="num">8</span>) {
+  console.log(<span class="str">"Good"</span>);
+} <span class="kw">else</span> {
+  console.log(<span class="str">"Try again"</span>);
+}
+
+<span class="kw">switch</span> (status) {
+  <span class="kw">case</span> <span class="str">"pending"</span>:
+    <span class="kw">break</span>;
+  <span class="kw">default</span>:
+    <span class="kw">break</span>;
+}
+
+<span class="kw">for</span> (<span class="kw">const</span> id <span class="kw">of</span> ids) {}
+<span class="kw">for</span> (<span class="kw">const</span> [i, id] <span class="kw">of</span> ids.entries()) {}</pre></div>
+          </article>
+          <article class="card lang-go">
+            <h4 class="lang-title"><span class="dot go"></span>Go</h4>
+            <div class="code"><div class="code-head"><span>Go</span><button class="copy">Copy</button></div><pre><span class="kw">if</span> score &gt;= <span class="num">8</span> {
+    fmt.Println(<span class="str">"Good"</span>)
+} <span class="kw">else</span> {
+    fmt.Println(<span class="str">"Try again"</span>)
+}
+
+<span class="kw">switch</span> status {
+<span class="kw">case</span> <span class="str">"pending"</span>:
+    fmt.Println(<span class="str">"wait"</span>)
+<span class="kw">default</span>:
+    fmt.Println(<span class="str">"other"</span>)
+}
+
+<span class="kw">for</span> i, id := <span class="kw">range</span> ids {
+    fmt.Println(i, id)
+}</pre></div>
+          </article>
+          <article class="card lang-py">
+            <h4 class="lang-title"><span class="dot py"></span>Python</h4>
+            <div class="code"><div class="code-head"><span>Python</span><button class="copy">Copy</button></div><pre><span class="kw">if</span> score &gt;= <span class="num">8</span>:
+    print(<span class="str">"Good"</span>)
+<span class="kw">else</span>:
+    print(<span class="str">"Try again"</span>)
+
+<span class="kw">match</span> status:
+    <span class="kw">case</span> <span class="str">"pending"</span>:
+        print(<span class="str">"wait"</span>)
+    <span class="kw">case</span> _:
+        print(<span class="str">"other"</span>)
+
+<span class="kw">for</span> i, value <span class="kw">in</span> enumerate(ids):
+    print(i, value)</pre></div>
+          </article>
+        </div>
+        <div class="note warn"><strong>Điểm khác biệt:</strong> JavaScript/TypeScript <code>switch</code> có thể fall-through nếu quên <code>break</code>. Go mặc định không fall-through; muốn chạy tiếp case sau phải viết rõ <code>fallthrough</code>.</div>
+      </div>
+    </section>
+
+    <section id="functions" data-search="function arrow function closure variadic default parameter named return multiple values lambda decorator">
+      <div class="section-head">
+        <h3>5. Hàm, closure và giá trị trả về</h3>
+        <p>Hàm là first-class value trong cả ba ngôn ngữ.</p>
+      </div>
+      <div class="section-body grid">
+        <article class="card lang-ts">
+          <h4 class="lang-title"><span class="dot ts"></span>TypeScript</h4>
+          <div class="code"><div class="code-head"><span>TypeScript</span><button class="copy">Copy</button></div><pre><span class="kw">function</span> <span class="fn">add</span>(a: <span class="type">number</span>, b = <span class="num">0</span>): <span class="type">number</span> {
+  <span class="kw">return</span> a + b;
+}
+
+<span class="kw">const</span> multiply = (a: <span class="type">number</span>, b: <span class="type">number</span>) =&gt; a * b;
+
+<span class="kw">function</span> <span class="fn">sum</span>(...values: <span class="type">number</span>[]) {
+  <span class="kw">return</span> values.reduce((acc, x) =&gt; acc + x, <span class="num">0</span>);
+}
+
+<span class="kw">function</span> <span class="fn">counter</span>() {
+  <span class="kw">let</span> n = <span class="num">0</span>;
+  <span class="kw">return</span> () =&gt; ++n;
+}</pre></div>
+        </article>
+
+        <article class="card lang-go">
+          <h4 class="lang-title"><span class="dot go"></span>Go</h4>
+          <div class="code"><div class="code-head"><span>Go</span><button class="copy">Copy</button></div><pre><span class="kw">func</span> <span class="fn">add</span>(a, b <span class="type">int</span>) <span class="type">int</span> {
+    <span class="kw">return</span> a + b
+}
+
+<span class="kw">func</span> <span class="fn">divide</span>(a, b <span class="type">float64</span>) (<span class="type">float64</span>, <span class="type">error</span>) {
+    <span class="kw">if</span> b == <span class="num">0</span> {
+        <span class="kw">return</span> <span class="num">0</span>, errors.New(<span class="str">"zero"</span>)
+    }
+    <span class="kw">return</span> a / b, <span class="kw">nil</span>
+}
+
+<span class="kw">func</span> <span class="fn">sum</span>(values ...<span class="type">int</span>) <span class="type">int</span> { ... }
+
+<span class="kw">func</span> <span class="fn">counter</span>() <span class="kw">func</span>() <span class="type">int</span> {
+    n := <span class="num">0</span>
+    <span class="kw">return func</span>() <span class="type">int</span> { n++; <span class="kw">return</span> n }
+}</pre></div>
+        </article>
+
+        <article class="card lang-py">
+          <h4 class="lang-title"><span class="dot py"></span>Python</h4>
+          <div class="code"><div class="code-head"><span>Python</span><button class="copy">Copy</button></div><pre><span class="kw">def</span> <span class="fn">add</span>(a: <span class="type">int</span>, b: <span class="type">int</span> = <span class="num">0</span>) -&gt; <span class="type">int</span>:
+    <span class="kw">return</span> a + b
+
+multiply = <span class="kw">lambda</span> a, b: a * b
+
+<span class="kw">def</span> <span class="fn">sum_values</span>(*values: <span class="type">int</span>) -&gt; <span class="type">int</span>:
+    <span class="kw">return</span> sum(values)
+
+<span class="kw">def</span> <span class="fn">counter</span>():
+    n = <span class="num">0</span>
+    <span class="kw">def</span> <span class="fn">next_value</span>():
+        <span class="kw">nonlocal</span> n
+        n += <span class="num">1</span>
+        <span class="kw">return</span> n
+    <span class="kw">return</span> next_value</pre></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="collections" data-search="array slice list map dict set filter map reduce comprehension append delete">
+      <div class="section-head">
+        <h3>6. Array, slice, list, map, dict và set</h3>
+        <p>Những thao tác collection thường dùng nhất.</p>
+      </div>
+      <div class="section-body">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Thao tác</th><th>TypeScript</th><th>Go</th><th>Python</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Tạo danh sách</strong></td><td><code>const a = [1, 2]</code></td><td><code>a := []int{1, 2}</code></td><td><code>a = [1, 2]</code></td></tr>
+              <tr><td><strong>Thêm cuối</strong></td><td><code>a.push(3)</code></td><td><code>a = append(a, 3)</code></td><td><code>a.append(3)</code></td></tr>
+              <tr><td><strong>Cắt</strong></td><td><code>a.slice(1, 3)</code></td><td><code>a[1:3]</code></td><td><code>a[1:3]</code></td></tr>
+              <tr><td><strong>Map</strong></td><td><code>a.map(x =&gt; x * 2)</code></td><td>Thường viết vòng <code>for range</code></td><td><code>[x * 2 for x in a]</code></td></tr>
+              <tr><td><strong>Filter</strong></td><td><code>a.filter(x =&gt; x &gt; 1)</code></td><td>Thường viết vòng <code>for range</code></td><td><code>[x for x in a if x &gt; 1]</code></td></tr>
+              <tr><td><strong>Map/dict</strong></td><td><code>new Map&lt;string, number&gt;()</code></td><td><code>make(map[string]int)</code></td><td><code>{}</code> hoặc <code>dict()</code></td></tr>
+              <tr><td><strong>Kiểm tra key</strong></td><td><code>map.has("a")</code></td><td><code>v, ok := m["a"]</code></td><td><code>"a" in d</code></td></tr>
+              <tr><td><strong>Xóa key</strong></td><td><code>map.delete("a")</code></td><td><code>delete(m, "a")</code></td><td><code>del d["a"]</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note ok"><strong>Tư duy Go:</strong> standard library ưu tiên vòng lặp rõ ràng hơn chuỗi <code>map/filter/reduce</code>. Viết dài hơn một chút nhưng flow và allocation thường dễ nhìn hơn.</div>
+      </div>
+    </section>
+
+    <section id="oop" data-search="class struct interface method receiver inheritance composition protocol dataclass">
+      <div class="section-head">
+        <h3>7. Object model: class, struct, interface</h3>
+        <p>TypeScript và Python có class; Go chủ yếu dùng struct + method + interface + composition.</p>
+      </div>
+      <div class="section-body grid">
+        <article class="card lang-ts">
+          <h4 class="lang-title"><span class="dot ts"></span>TypeScript</h4>
+          <div class="code"><div class="code-head"><span>TypeScript</span><button class="copy">Copy</button></div><pre><span class="kw">interface</span> Speaker {
+  speak(): <span class="type">string</span>;
+}
+
+<span class="kw">class</span> User <span class="kw">implements</span> Speaker {
+  <span class="kw">constructor</span>(
+    <span class="kw">public</span> name: <span class="type">string</span>,
+    <span class="kw">private</span> age: <span class="type">number</span>
+  ) {}
+
+  speak(): <span class="type">string</span> {
+    <span class="kw">return</span> <span class="str">`Hi ${this.name}`</span>;
+  }
+}</pre></div>
+          <p>Interface là structural: object có đủ shape thì tương thích, không bắt buộc khai báo <code>implements</code>.</p>
+        </article>
+
+        <article class="card lang-go">
+          <h4 class="lang-title"><span class="dot go"></span>Go</h4>
+          <div class="code"><div class="code-head"><span>Go</span><button class="copy">Copy</button></div><pre><span class="kw">type</span> Speaker <span class="kw">interface</span> {
+    Speak() <span class="type">string</span>
+}
+
+<span class="kw">type</span> User <span class="kw">struct</span> {
+    Name <span class="type">string</span>
+    age  <span class="type">int</span> <span class="cm">// unexported</span>
+}
+
+<span class="kw">func</span> (u User) <span class="fn">Speak</span>() <span class="type">string</span> {
+    <span class="kw">return</span> <span class="str">"Hi "</span> + u.Name
+}
+
+<span class="kw">func</span> (u *User) <span class="fn">Birthday</span>() {
+    u.age++
+}</pre></div>
+          <p>Không viết <code>implements</code>. Chỉ cần type có đủ method thì tự động thỏa interface.</p>
+        </article>
+
+        <article class="card lang-py">
+          <h4 class="lang-title"><span class="dot py"></span>Python</h4>
+          <div class="code"><div class="code-head"><span>Python</span><button class="copy">Copy</button></div><pre><span class="kw">from</span> dataclasses <span class="kw">import</span> dataclass
+<span class="kw">from</span> typing <span class="kw">import</span> Protocol
+
+<span class="kw">class</span> Speaker(Protocol):
+    <span class="kw">def</span> <span class="fn">speak</span>(self) -&gt; <span class="type">str</span>: ...
+
+@dataclass
+<span class="kw">class</span> User:
+    name: <span class="type">str</span>
+    age: <span class="type">int</span>
+
+    <span class="kw">def</span> <span class="fn">speak</span>(self) -&gt; <span class="type">str</span>:
+        <span class="kw">return</span> <span class="str">f"Hi {self.name}"</span></pre></div>
+          <p><code>Protocol</code> tạo structural typing cho type checker, gần với interface của TypeScript/Go.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="errors" data-search="error exception try catch throw panic recover result tuple">
+      <div class="section-head">
+        <h3>8. Xử lý lỗi</h3>
+        <p>TypeScript/Python thường dùng exception; Go trả lỗi như một giá trị bình thường.</p>
+      </div>
+      <div class="section-body">
+        <div class="grid">
+          <article class="card lang-ts">
+            <h4 class="lang-title"><span class="dot ts"></span>TypeScript</h4>
+            <div class="code"><div class="code-head"><span>TypeScript</span><button class="copy">Copy</button></div><pre><span class="kw">function</span> <span class="fn">parseAge</span>(value: <span class="type">string</span>): <span class="type">number</span> {
+  <span class="kw">const</span> age = Number(value);
+  <span class="kw">if</span> (Number.isNaN(age)) {
+    <span class="kw">throw new</span> Error(<span class="str">"Invalid age"</span>);
+  }
+  <span class="kw">return</span> age;
+}
+
+<span class="kw">try</span> {
+  parseAge(<span class="str">"x"</span>);
+} <span class="kw">catch</span> (error: <span class="type">unknown</span>) {
+  <span class="kw">if</span> (error <span class="kw">instanceof</span> Error) console.error(error.message);
+}</pre></div>
+          </article>
+          <article class="card lang-go">
+            <h4 class="lang-title"><span class="dot go"></span>Go</h4>
+            <div class="code"><div class="code-head"><span>Go</span><button class="copy">Copy</button></div><pre><span class="kw">func</span> <span class="fn">parseAge</span>(value <span class="type">string</span>) (<span class="type">int</span>, <span class="type">error</span>) {
+    age, err := strconv.Atoi(value)
+    <span class="kw">if</span> err != <span class="kw">nil</span> {
+        <span class="kw">return</span> <span class="num">0</span>, fmt.Errorf(<span class="str">"parse age: %w"</span>, err)
+    }
+    <span class="kw">return</span> age, <span class="kw">nil</span>
+}
+
+age, err := parseAge(<span class="str">"x"</span>)
+<span class="kw">if</span> err != <span class="kw">nil</span> {
+    log.Println(err)
+}</pre></div>
+          </article>
+          <article class="card lang-py">
+            <h4 class="lang-title"><span class="dot py"></span>Python</h4>
+            <div class="code"><div class="code-head"><span>Python</span><button class="copy">Copy</button></div><pre><span class="kw">def</span> <span class="fn">parse_age</span>(value: <span class="type">str</span>) -&gt; <span class="type">int</span>:
+    <span class="kw">try</span>:
+        <span class="kw">return</span> int(value)
+    <span class="kw">except</span> ValueError <span class="kw">as</span> exc:
+        <span class="kw">raise</span> ValueError(<span class="str">"Invalid age"</span>) <span class="kw">from</span> exc
+
+<span class="kw">try</span>:
+    parse_age(<span class="str">"x"</span>)
+<span class="kw">except</span> ValueError <span class="kw">as</span> exc:
+    print(exc)</pre></div>
+          </article>
+        </div>
+        <div class="note warn"><code>panic</code> trong Go không phải cách thay thế cho <code>throw</code> trong logic thông thường. Dùng <code>error</code> cho lỗi có thể dự đoán và xử lý.</div>
+      </div>
+    </section>
+
+    <section id="async" data-search="async await promise event loop goroutine channel select asyncio gather concurrency parallelism">
+      <div class="section-head">
+        <h3>9. Async và concurrency</h3>
+        <p>Đây là khác biệt kiến trúc quan trọng nhất giữa ba hệ sinh thái.</p>
+      </div>
+      <div class="section-body">
+        <div class="flow">
+          <div class="flow-node"><strong>Node.js</strong><br><span class="mini">Một event loop chính</span></div>
+          <div class="arrow">→</div>
+          <div class="flow-node">I/O được runtime/OS xử lý</div>
+          <div class="arrow">→</div>
+          <div class="flow-node">Callback / Promise tiếp tục</div>
+        </div>
+        <div class="flow">
+          <div class="flow-node"><strong>Go</strong><br><span class="mini">Nhiều goroutine</span></div>
+          <div class="arrow">→</div>
+          <div class="flow-node">Go scheduler multiplex</div>
+          <div class="arrow">→</div>
+          <div class="flow-node">Một số OS threads</div>
+        </div>
+        <div class="flow">
+          <div class="flow-node"><strong>Python asyncio</strong><br><span class="mini">Một event loop</span></div>
+          <div class="arrow">→</div>
+          <div class="flow-node">Coroutine yield khi await</div>
+          <div class="arrow">→</div>
+          <div class="flow-node">Task khác chạy</div>
+        </div>
+
+        <div class="grid">
+          <article class="card lang-ts">
+            <h4 class="lang-title"><span class="dot ts"></span>TypeScript</h4>
+            <div class="code"><div class="code-head"><span>TypeScript</span><button class="copy">Copy</button></div><pre><span class="kw">async function</span> <span class="fn">getUser</span>(id: <span class="type">number</span>) {
+  <span class="kw">const</span> response = <span class="kw">await</span> fetch(<span class="str">`/users/${id}`</span>);
+  <span class="kw">if</span> (!response.ok) <span class="kw">throw new</span> Error(<span class="str">"HTTP error"</span>);
+  <span class="kw">return</span> response.json();
+}
+
+<span class="kw">const</span> [a, b] = <span class="kw">await</span> Promise.all([
+  getUser(<span class="num">1</span>),
+  getUser(<span class="num">2</span>)
+]);</pre></div>
+          </article>
+
+          <article class="card lang-go">
+            <h4 class="lang-title"><span class="dot go"></span>Go</h4>
+            <div class="code"><div class="code-head"><span>Go</span><button class="copy">Copy</button></div><pre>results := make(<span class="kw">chan</span> User, <span class="num">2</span>)
+errors := make(<span class="kw">chan</span> error, <span class="num">2</span>)
+
+<span class="kw">for</span> _, id := <span class="kw">range</span> []<span class="type">int</span>{<span class="num">1</span>, <span class="num">2</span>} {
+    <span class="kw">go func</span>(id <span class="type">int</span>) {
+        user, err := getUser(id)
+        <span class="kw">if</span> err != <span class="kw">nil</span> { errors &lt;- err; <span class="kw">return</span> }
+        results &lt;- user
+    }(id)
+}
+
+<span class="kw">select</span> {
+<span class="kw">case</span> user := &lt;-results:
+    fmt.Println(user)
+<span class="kw">case</span> err := &lt;-errors:
+    log.Println(err)
+}</pre></div>
+          </article>
+
+          <article class="card lang-py">
+            <h4 class="lang-title"><span class="dot py"></span>Python</h4>
+            <div class="code"><div class="code-head"><span>Python</span><button class="copy">Copy</button></div><pre><span class="kw">import</span> asyncio
+<span class="kw">import</span> httpx
+
+<span class="kw">async def</span> <span class="fn">get_user</span>(user_id: <span class="type">int</span>):
+    <span class="kw">async with</span> httpx.AsyncClient() <span class="kw">as</span> client:
+        response = <span class="kw">await</span> client.get(<span class="str">f"/users/{user_id}"</span>)
+        response.raise_for_status()
+        <span class="kw">return</span> response.json()
+
+users = <span class="kw">await</span> asyncio.gather(
+    get_user(<span class="num">1</span>),
+    get_user(<span class="num">2</span>)
+)</pre></div>
+          </article>
+        </div>
+
+        <div class="note">
+          <strong>I/O-bound:</strong> cả ba đều xử lý concurrency tốt. <strong>CPU-bound:</strong> Node.js cần Worker Threads/process; Python thường dùng multiprocessing/native extension; Go chạy goroutine song song trên nhiều OS thread khi có nhiều CPU core.
+        </div>
+      </div>
+    </section>
+
+    <section id="modules" data-search="module package import export require esm commonjs go package python module __init__">
+      <div class="section-head">
+        <h3>10. Module, package và chia file</h3>
+        <p>Cách export/import code giữa các file.</p>
+      </div>
+      <div class="section-body grid">
+        <article class="card lang-ts">
+          <h4 class="lang-title"><span class="dot ts"></span>TypeScript / ESM</h4>
+          <div class="code"><div class="code-head"><span>math.ts</span><button class="copy">Copy</button></div><pre><span class="kw">export function</span> <span class="fn">add</span>(a: <span class="type">number</span>, b: <span class="type">number</span>) {
+  <span class="kw">return</span> a + b;
+}
+
+<span class="kw">export default class</span> Calculator {}</pre></div>
+          <div class="code"><div class="code-head"><span>main.ts</span><button class="copy">Copy</button></div><pre><span class="kw">import</span> Calculator, { add } <span class="kw">from</span> <span class="str">"./math.js"</span>;</pre></div>
+        </article>
+
+        <article class="card lang-go">
+          <h4 class="lang-title"><span class="dot go"></span>Go package</h4>
+          <div class="code"><div class="code-head"><span>mathx/math.go</span><button class="copy">Copy</button></div><pre><span class="kw">package</span> mathx
+
+<span class="kw">func</span> <span class="fn">Add</span>(a, b <span class="type">int</span>) <span class="type">int</span> {
+    <span class="kw">return</span> a + b
+}</pre></div>
+          <div class="code"><div class="code-head"><span>main.go</span><button class="copy">Copy</button></div><pre><span class="kw">package</span> main
+
+<span class="kw">import</span> (
+    <span class="str">"fmt"</span>
+    <span class="str">"example.com/app/mathx"</span>
+)
+
+<span class="kw">func</span> <span class="fn">main</span>() {
+    fmt.Println(mathx.Add(<span class="num">1</span>, <span class="num">2</span>))
+}</pre></div>
+        </article>
+
+        <article class="card lang-py">
+          <h4 class="lang-title"><span class="dot py"></span>Python module</h4>
+          <div class="code"><div class="code-head"><span>mathx.py</span><button class="copy">Copy</button></div><pre><span class="kw">def</span> <span class="fn">add</span>(a: <span class="type">int</span>, b: <span class="type">int</span>) -&gt; <span class="type">int</span>:
+    <span class="kw">return</span> a + b</pre></div>
+          <div class="code"><div class="code-head"><span>main.py</span><button class="copy">Copy</button></div><pre><span class="kw">from</span> mathx <span class="kw">import</span> add
+
+<span class="kw">if</span> __name__ == <span class="str">"__main__"</span>:
+    print(add(<span class="num">1</span>, <span class="num">2</span>))</pre></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="io" data-search="file read write json serialize deserialize fs os pathlib encoding utf8">
+      <div class="section-head">
+        <h3>11. File và JSON</h3>
+        <p>Đọc file JSON là ví dụ I/O cơ bản, đồng thời cho thấy style của từng ngôn ngữ.</p>
+      </div>
+      <div class="section-body grid">
+        <article class="card lang-ts">
+          <h4 class="lang-title"><span class="dot ts"></span>TypeScript</h4>
+          <div class="code"><div class="code-head"><span>TypeScript</span><button class="copy">Copy</button></div><pre><span class="kw">import</span> { readFile, writeFile } <span class="kw">from</span> <span class="str">"node:fs/promises"</span>;
+
+<span class="kw">type</span> Config = { port: <span class="type">number</span> };
+
+<span class="kw">const</span> raw = <span class="kw">await</span> readFile(<span class="str">"config.json"</span>, <span class="str">"utf8"</span>);
+<span class="kw">const</span> config = JSON.parse(raw) <span class="kw">as</span> Config;
+
+<span class="kw">await</span> writeFile(
+  <span class="str">"out.json"</span>,
+  JSON.stringify(config, <span class="kw">null</span>, <span class="num">2</span>)
+);</pre></div>
+        </article>
+        <article class="card lang-go">
+          <h4 class="lang-title"><span class="dot go"></span>Go</h4>
+          <div class="code"><div class="code-head"><span>Go</span><button class="copy">Copy</button></div><pre><span class="kw">type</span> Config <span class="kw">struct</span> {
+    Port <span class="type">int</span> <span class="str">`json:"port"`</span>
+}
+
+data, err := os.ReadFile(<span class="str">"config.json"</span>)
+<span class="kw">if</span> err != <span class="kw">nil</span> { log.Fatal(err) }
+
+<span class="kw">var</span> config Config
+<span class="kw">if</span> err := json.Unmarshal(data, &amp;config); err != <span class="kw">nil</span> {
+    log.Fatal(err)
+}
+
+out, _ := json.MarshalIndent(config, <span class="str">""</span>, <span class="str">"  "</span>)
+_ = os.WriteFile(<span class="str">"out.json"</span>, out, <span class="num">0644</span>)</pre></div>
+        </article>
+        <article class="card lang-py">
+          <h4 class="lang-title"><span class="dot py"></span>Python</h4>
+          <div class="code"><div class="code-head"><span>Python</span><button class="copy">Copy</button></div><pre><span class="kw">import</span> json
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+config = json.loads(
+    Path(<span class="str">"config.json"</span>).read_text(encoding=<span class="str">"utf-8"</span>)
+)
+
+Path(<span class="str">"out.json"</span>).write_text(
+    json.dumps(config, indent=<span class="num">2</span>),
+    encoding=<span class="str">"utf-8"</span>
+)</pre></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="backend" data-search="http server express fastapi net/http request response route json">
+      <div class="section-head">
+        <h3>12. HTTP server tối thiểu</h3>
+        <p>Một endpoint <code>GET /hello</code> trả JSON.</p>
+      </div>
+      <div class="section-body grid">
+        <article class="card lang-ts">
+          <h4 class="lang-title"><span class="dot ts"></span>Node.js + Express</h4>
+          <div class="code"><div class="code-head"><span>TypeScript</span><button class="copy">Copy</button></div><pre><span class="kw">import</span> express <span class="kw">from</span> <span class="str">"express"</span>;
+
+<span class="kw">const</span> app = express();
+
+app.get(<span class="str">"/hello"</span>, (_req, res) =&gt; {
+  res.json({ message: <span class="str">"Hello"</span> });
+});
+
+app.listen(<span class="num">3000</span>, () =&gt; {
+  console.log(<span class="str">"http://localhost:3000"</span>);
+});</pre></div>
+        </article>
+        <article class="card lang-go">
+          <h4 class="lang-title"><span class="dot go"></span>Go net/http</h4>
+          <div class="code"><div class="code-head"><span>Go</span><button class="copy">Copy</button></div><pre><span class="kw">func</span> <span class="fn">main</span>() {
+    http.HandleFunc(<span class="str">"/hello"</span>, <span class="kw">func</span>(w http.ResponseWriter, r *http.Request) {
+        w.Header().Set(<span class="str">"Content-Type"</span>, <span class="str">"application/json"</span>)
+        json.NewEncoder(w).Encode(<span class="kw">map</span>[<span class="type">string</span>]<span class="type">string</span>{
+            <span class="str">"message"</span>: <span class="str">"Hello"</span>,
+        })
+    })
+
+    log.Fatal(http.ListenAndServe(<span class="str">":3000"</span>, <span class="kw">nil</span>))
+}</pre></div>
+        </article>
+        <article class="card lang-py">
+          <h4 class="lang-title"><span class="dot py"></span>Python + FastAPI</h4>
+          <div class="code"><div class="code-head"><span>Python</span><button class="copy">Copy</button></div><pre><span class="kw">from</span> fastapi <span class="kw">import</span> FastAPI
+
+app = FastAPI()
+
+@app.get(<span class="str">"/hello"</span>)
+<span class="kw">async def</span> <span class="fn">hello</span>():
+    <span class="kw">return</span> {<span class="str">"message"</span>: <span class="str">"Hello"</span>}
+
+<span class="cm"># uvicorn main:app --reload --port 3000</span></pre></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="testing" data-search="test unit test jest vitest go test pytest assert table driven">
+      <div class="section-head">
+        <h3>13. Testing cơ bản</h3>
+        <p>Cùng kiểm tra hàm <code>add(1, 2) === 3</code>.</p>
+      </div>
+      <div class="section-body grid">
+        <article class="card lang-ts">
+          <h4 class="lang-title"><span class="dot ts"></span>Vitest</h4>
+          <div class="code"><div class="code-head"><span>math.test.ts</span><button class="copy">Copy</button></div><pre><span class="kw">import</span> { describe, expect, it } <span class="kw">from</span> <span class="str">"vitest"</span>;
+<span class="kw">import</span> { add } <span class="kw">from</span> <span class="str">"./math"</span>;
+
+describe(<span class="str">"add"</span>, () =&gt; {
+  it(<span class="str">"adds two numbers"</span>, () =&gt; {
+    expect(add(<span class="num">1</span>, <span class="num">2</span>)).toBe(<span class="num">3</span>);
+  });
+});</pre></div>
+          <p><code>npx vitest</code></p>
+        </article>
+        <article class="card lang-go">
+          <h4 class="lang-title"><span class="dot go"></span>go test</h4>
+          <div class="code"><div class="code-head"><span>math_test.go</span><button class="copy">Copy</button></div><pre><span class="kw">func</span> <span class="fn">TestAdd</span>(t *testing.T) {
+    got := Add(<span class="num">1</span>, <span class="num">2</span>)
+    want := <span class="num">3</span>
+
+    <span class="kw">if</span> got != want {
+        t.Fatalf(<span class="str">"got %d, want %d"</span>, got, want)
+    }
+}</pre></div>
+          <p><code>go test ./...</code></p>
+        </article>
+        <article class="card lang-py">
+          <h4 class="lang-title"><span class="dot py"></span>pytest</h4>
+          <div class="code"><div class="code-head"><span>test_mathx.py</span><button class="copy">Copy</button></div><pre><span class="kw">from</span> mathx <span class="kw">import</span> add
+
+<span class="kw">def</span> <span class="fn">test_add</span>():
+    <span class="kw">assert</span> add(<span class="num">1</span>, <span class="num">2</span>) == <span class="num">3</span></pre></div>
+          <p><code>pytest</code></p>
+        </article>
+      </div>
+    </section>
+
+    <section id="comparison" data-search="comparison choose language performance deploy ecosystem typing learning">
+      <div class="section-head">
+        <h3>14. Bảng so sánh nhanh</h3>
+        <p>Không có ngôn ngữ “tốt nhất”; có ngôn ngữ phù hợp hơn với từng ràng buộc.</p>
+      </div>
+      <div class="section-body">
+        <div class="compare-strip">
+          <div class="compare-label">Tiêu chí</div><div class="compare-label">TypeScript</div><div class="compare-label">Go</div><div class="compare-label">Python</div>
+          <div class="compare-label">Cú pháp</div><div class="ts-cell">Trung bình; nhiều syntax JS + type syntax</div><div class="go-cell">Ít keyword, quy tắc chặt</div><div class="py-cell">Ngắn, gần pseudo-code</div>
+          <div class="compare-label">Type safety</div><div class="ts-cell"><span class="check">Mạnh</span>, nhưng bị xóa ở runtime</div><div class="go-cell"><span class="check">Mạnh</span>, compile-time</div><div class="py-cell">Tùy chọn qua type hints</div>
+          <div class="compare-label">Hiệu năng</div><div class="ts-cell">Tốt cho web/I/O</div><div class="go-cell"><span class="check">Rất tốt</span>, native binary</div><div class="py-cell">Thường thấp hơn cho CPU thuần</div>
+          <div class="compare-label">Deploy</div><div class="ts-cell">Node runtime + node_modules/bundle</div><div class="go-cell"><span class="check">Một binary</span></div><div class="py-cell">Python runtime + venv/dependencies</div>
+          <div class="compare-label">Web backend</div><div class="ts-cell"><span class="check">Rất mạnh</span></div><div class="go-cell"><span class="check">Rất mạnh</span></div><div class="py-cell"><span class="check">Mạnh</span></div>
+          <div class="compare-label">AI / data</div><div class="ts-cell">Có SDK, nhưng hệ sinh thái nhỏ hơn</div><div class="go-cell">Không phải lựa chọn chính</div><div class="py-cell"><span class="check">Dẫn đầu</span></div>
+          <div class="compare-label">CLI / service nhỏ</div><div class="ts-cell">Tiện nếu team đã dùng JS</div><div class="go-cell"><span class="check">Rất phù hợp</span></div><div class="py-cell">Nhanh để viết automation</div>
+        </div>
+
+        <div class="note ok">
+          <strong>Quy tắc chọn nhanh:</strong> chọn TypeScript khi sản phẩm thiên về web và team dùng JS; chọn Go khi cần service/CLI gọn, concurrent, deploy đơn giản; chọn Python khi cần automation, data, AI/ML hoặc phát triển prototype rất nhanh.
+        </div>
+      </div>
+    </section>
+
+    <section id="pitfalls" data-search="pitfall gotcha null undefined nil mutable default argument pointer reference equality">
+      <div class="section-head">
+        <h3>15. Những điểm dễ nhầm</h3>
+        <p>Các lỗi tư duy thường xảy ra khi chuyển giữa ba ngôn ngữ.</p>
+      </div>
+      <div class="section-body">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Chủ đề</th><th>TypeScript</th><th>Go</th><th>Python</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Null-like</strong></td><td><code>null</code> và <code>undefined</code></td><td><code>nil</code> chỉ dùng cho một số loại như pointer, map, slice, channel, interface...</td><td><code>None</code></td></tr>
+              <tr><td><strong>Equality</strong></td><td>Ưu tiên <code>===</code>; object so theo reference</td><td><code>==</code> chỉ cho comparable types; slice/map/function không so trực tiếp</td><td><code>==</code> so giá trị; <code>is</code> so identity</td></tr>
+              <tr><td><strong>Mutation</strong></td><td><code>const</code> object vẫn sửa field được</td><td>Slice chứa descriptor trỏ tới backing array; append có thể cấp mảng mới</td><td>List/dict mutable; tuple/string immutable</td></tr>
+              <tr><td><strong>Private/public</strong></td><td><code>private</code>, <code>protected</code>, <code>public</code></td><td>Tên viết hoa là exported; viết thường là package-private</td><td>Chủ yếu theo convention <code>_name</code>; name mangling với <code>__name</code></td></tr>
+              <tr><td><strong>Default argument</strong></td><td>Được hỗ trợ</td><td>Không hỗ trợ trực tiếp</td><td>Cẩn thận mutable default như <code>def f(items=[])</code></td></tr>
+              <tr><td><strong>Unused variable</strong></td><td>Tùy compiler/linter</td><td>Compile error trong nhiều trường hợp</td><td>Không lỗi runtime</td></tr>
+              <tr><td><strong>Formatting</strong></td><td>Prettier/ESLint</td><td><code>gofmt</code> là chuẩn gần như tuyệt đối</td><td>Black/Ruff thường dùng</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="note warn">
+          <strong>Mutable default trong Python:</strong>
+          <code>def add(item, items=[])</code> dùng lại cùng một list qua nhiều lần gọi. Hãy dùng <code>None</code> rồi tạo list bên trong hàm.
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Ultimate cheat sheet · tìm kiếm nhanh · lọc theo ngôn ngữ · copy code · in PDF · dùng offline.
+    </footer>
+  </main>
+</div>
+
+<script>
+  const search = document.getElementById("search");
+  const sections = [...document.querySelectorAll("section")];
+
+  search.addEventListener("input", () => {
+    const q = search.value.trim().toLowerCase();
+    sections.forEach(section => {
+      const text = (section.innerText + " " + (section.dataset.search || "")).toLowerCase();
+      section.classList.toggle("hidden", q && !text.includes(q));
+    });
+  });
+
+  document.querySelectorAll(".copy").forEach(button => {
+    button.addEventListener("click", async () => {
+      const pre = button.closest(".code").querySelector("pre");
+      try {
+        await navigator.clipboard.writeText(pre.innerText);
+        const old = button.textContent;
+        button.textContent = "Copied ✓";
+        setTimeout(() => button.textContent = old, 1200);
+      } catch {
+        button.textContent = "Chọn & copy";
+      }
+    });
+  });
+
+  const links = [...document.querySelectorAll("nav a")];
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + entry.target.id));
+      }
+    });
+  }, { rootMargin: "-20% 0px -70% 0px" });
+  sections.forEach(section => observer.observe(section));
+
+  document.querySelectorAll(".filter-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      document.body.classList.remove("lang-ts", "lang-go", "lang-py");
+      const lang = btn.dataset.lang;
+      if (lang !== "all") document.body.classList.add("lang-" + lang);
+    });
+  });
+
+  const progress = document.getElementById("progress");
+  const updateProgress = () => {
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const ratio = scrollable > 0 ? window.scrollY / scrollable : 0;
+    progress.style.width = `${Math.min(100, Math.max(0, ratio * 100))}%`;
+  };
+  window.addEventListener("scroll", updateProgress, { passive: true });
+  updateProgress();
+</script>
+</body>
+</html>
